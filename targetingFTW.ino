@@ -94,6 +94,9 @@ int buttonArray [2][13] = {{
   0
 }};
 
+
+uint32_t buttonHeldTime[13];
+
 int D_led_array[6] = {LED_D1, LED_D2, LED_D3, LED_D4, LED_D5, LED_D6};
 
 // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
@@ -126,6 +129,16 @@ void setup() {
 
 
 void loop() {
+	
+	for (j=0;j<13;j++){
+		if (digitalRead(buttonArray[0][j]) == 0){
+			if (j == randNumber) 
+				buttonHeldTime[j]++;
+			else 
+				buttonHeldTime[j] = 0;
+		}
+    }
+	delay(100);
 
 whackAmole();
   
