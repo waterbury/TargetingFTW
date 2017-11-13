@@ -121,7 +121,7 @@ int D_led_array[6] = {LED_D1, LED_D2, LED_D3, LED_D4, LED_D5, LED_D6};
 // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
 // Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
 // example for more information on possible values.
-Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels = Adafruit_NeoPixel(NUMPIXELS, PIN, NEO_RGB + NEO_KHZ800);
 
 int delayval = 1000; // delay for half a second
 int currentLed = 0;
@@ -211,35 +211,35 @@ state fsm_clock_led_loop(){
 	switch (i)
 	{
 	  case 0:
-		lightSingleLed(2);
+		lightSingleLed(2,255,255,255);
 		break;
 	  case 1:
-		lightSingleLed(4);
+		lightSingleLed(4,255,255,255);
 		break;
 	  case 2:
-		lightSingleLed(7);
+		lightSingleLed(7,255,255,255);
 		break;
 	  case 3:
-		lightSingleLed(9);
+		lightSingleLed(9,255,255,255);
 		break;
 	  case 4:
-		lightSingleLed(10);
+		lightSingleLed(10,255,255,255);
 		break;
 	  case 5:
-		lightSingleLed(8);
+		lightSingleLed(8,255,255,255);
 		break;
 	  case 6:
-		lightSingleLed(5);
+		lightSingleLed(5,255,255,255);
 		break;
 	  case 7:
-		lightSingleLed(3);
+		lightSingleLed(3,255,255,255);
 		break;		
 	}
 	i++;
   delay(100);
 	
 	
-	if (buttonHeldTime[0] >= 100 && buttonHeldTime[1] >= 30){
+	if (buttonHeldTime[0] >= 3 && buttonHeldTime[1] >= 3){
 		while (buttonHeldTime[0] != 0 || buttonHeldTime[1] != 0) //wait until user releases both buttons
       pollButtons();
 		
@@ -321,8 +321,8 @@ void pollButtons(){
 
 state whackAmole(){
   randNumber = random(13);
-  lightDLeds(255,255,255);
-  lightSingleLed(randNumber);  
+  lightDLeds(120,120,120);
+  lightSingleLed(randNumber,255,255,255);  
   flag = 0;
   
 for (timerVariable =0;timerVariable<100000 && flag == 0;timerVariable++){
@@ -338,23 +338,23 @@ for (timerVariable =0;timerVariable<100000 && flag == 0;timerVariable++){
 }
 
 if (flag)
-  lightDLeds(0,255,0);    
+  lightDLeds(0,200,0);    
 else
-   lightDLeds(255,0,0);
+   lightDLeds(200,0,0);
 
 delay(500);
 
 return S_WHACK_A_MOLE;
 }
 
-void lightSingleLed(int ledNumber){
+void lightSingleLed(int ledNumber, int R_val, int G_val, int B_val){
 int i =0;
 
    for(int i=0;i<13;i++){
     // pixels.Color takes RGB values, from 0,0,0 up to 255,255,255
 
     if (i == ledNumber){
-     pixels.setPixelColor(buttonArray[1][i], 0, 255, 0);
+     pixels.setPixelColor(buttonArray[1][i], R_val, G_val, B_val);
     }
     else{
      pixels.setPixelColor(buttonArray[1][i], 0, 0, 0);
@@ -372,7 +372,7 @@ void lightDLeds(int R_val, int G_val, int B_val){
 int i = 0;
 
 for (i = 0 ; i<6; i++){
- pixels.setPixelColor(D_led_array[i], G_val, R_val, B_val);
+ pixels.setPixelColor(D_led_array[i], R_val, G_val, B_val);
   
 }
 pixels.show();
