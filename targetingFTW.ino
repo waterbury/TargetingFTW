@@ -201,7 +201,7 @@ state fsm_init(){
 }
 
 state fsm_clock_led_loop(){
-	static int i = 0;
+	static uint32_t i = 0;
 	pollButtons();
 	
 	if (i > 7)
@@ -236,10 +236,13 @@ state fsm_clock_led_loop(){
 		break;		
 	}
 	i++;
+  delay(100);
 	
 	
-	if (buttonHeldTime[0] >= 100 && buttonHeldTime[1] >= 100){
-		while (buttonHeldTime[0] != 0 || buttonHeldTime[1] != 0); //wait until user releases both buttons
+	if (buttonHeldTime[0] >= 100 && buttonHeldTime[1] >= 30){
+		while (buttonHeldTime[0] != 0 || buttonHeldTime[1] != 0) //wait until user releases both buttons
+      pollButtons();
+		
 		
 		return	S_WHACK_A_MOLE;
 	}
@@ -303,12 +306,11 @@ state fsm_test_parry(){
 void pollButtons(){
 	
 	for (j=0;j<13;j++){
-		if (digitalRead(buttonArray[0][j]) == 0){
-			if (j == randNumber) 
+		if (digitalRead(buttonArray[0][j]) == 0)
 				buttonHeldTime[j]++;
-			else 
+    else        
 				buttonHeldTime[j] = 0;
-		}
+		
     }
 	delay(10);
 
