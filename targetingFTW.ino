@@ -130,15 +130,9 @@ uint32_t timerVariable = 0;
 int flag = 0;
 
 void setup() {
-  // End of trinket special code
-  randomSeed(analogRead(6));
-  Serial.begin(9600);
-  pixels.begin(); // This initializes the NeoPixel library.
 
-  for (j=0;j<13;j++){
-  pinMode(buttonArray[0][j], INPUT);
-  digitalWrite(buttonArray[0][j], HIGH);
-  }
+  
+	fsm = S_INIT;
 }
 
 
@@ -149,7 +143,7 @@ void loop()
     case S_INIT:
       fsm = fsm_init();
       break;
-    case S_CLOCK_LED_LOOP;
+    case S_CLOCK_LED_LOOP:
       fsm = fsm_clock_led_loop();
       break;
     case S_MAIN_MENU:
@@ -161,8 +155,8 @@ void loop()
     case S_GAME_OVER:
       fsm = fsm_game_over();
     break;
-  case S_SPEED_TEST_COUNTDOWN:
-    fsm = fsm_speed_test_countdown();
+	case S_SPEED_TEST_COUNTDOWN:
+	fsm = fsm_speed_test_countdown();
     break;
   case S_SPEED_TEST_COUNTUP:
     fsm = fsm_speed_test_countup();
@@ -185,11 +179,89 @@ void loop()
   }
 }
 
+state fsm_init(){
+	int i = 0;
+	
+	//randomSeed(analogRead(6));
+	Serial.begin(9600);
+	pixels.begin(); // This initializes the NeoPixel library.
+
+	for (i=0;i<13;i++){
+		pinMode(buttonArray[0][i], INPUT);
+		digitalWrite(buttonArray[0][i], HIGH);
+	}	
+
+	return S_CLOCK_LED_LOOP;
+	
+}
+
+state fsm_clock_led_loop(){
+	
+	pollButtons();
+	
+	if (buttonHeldTime[0] > = 100 && buttonHeldTime[1] => 100){
+		while (buttonHeldTime[0] != 0 || buttonHeldTime[1] != 0); //
+		
+		
+	}
+		
+	
+	return S_CLOCK_LED_LOOP;
+}
+
+state fsm_main_menu(){
+	return S_MAIN_MENU;	
+}
+
+state fsm_pregame_countdown(){
+
+	return S_PREGAME_COUNTDOWN;
+}
+
+state fsm_game_over(){
+
+	return S_GAME_OVER;
+}
+
+state fsm_speed_test_countdown(){
+	
+	return S_SPEED_TEST_COUNTDOWN;
+}
+
+state fsm_speed_test_countup(){
+	
+	return S_SPEED_TEST_COUNTUP;
+}
+
+state fsm_enduro_test(){
+	
+	return S_ENDURO_TEST;
+}
+
+state fsm_light_order_test(){
+	
+	return S_LIGHT_ORDER_TEST;
+}
+
+state fsm_simon_says(){
+	
+	return S_SIMON_SAYS;
+}
+
+state fsm_test_parry(){
+	
+	return S_SPEED_TEST_PARRY;
+}
+
+
+
+
   
 
   
   
 
+void pollButtons(){
 	
 	for (j=0;j<13;j++){
 		if (digitalRead(buttonArray[0][j]) == 0){
@@ -199,9 +271,10 @@ void loop()
 				buttonHeldTime[j] = 0;
 		}
     }
-	delay(100);
+	delay(10);
 
-whackAmole();
+}
+//whackAmole();
   
 
 
