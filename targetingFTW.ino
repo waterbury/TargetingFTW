@@ -76,7 +76,8 @@ typedef enum state
   S_ENDURO_TEST,
   S_LIGHT_ORDER_TEST,
   S_SIMON_SAYS,
-  S_SPEED_TEST_PARRY
+  S_SPEED_TEST_PARRY,
+  S_WHACK_A_MOLE
 } State;
 
 State fsm;
@@ -150,29 +151,33 @@ void loop()
       fsm = fsm_main_menu();
       break;
     case S_PREGAME_COUNTDOWN:
-      fsm = fsm_pregame_countdown();
-      break;
+		fsm = fsm_pregame_countdown();
+		break;
     case S_GAME_OVER:
-      fsm = fsm_game_over();
-    break;
+		fsm = fsm_game_over();
+		break;
 	case S_SPEED_TEST_COUNTDOWN:
-	fsm = fsm_speed_test_countdown();
-    break;
-  case S_SPEED_TEST_COUNTUP:
-    fsm = fsm_speed_test_countup();
-    break;
-  case S_ENDURO_TEST:
-    fsm = fsm_enduro_test();
-    break;
-  case S_LIGHT_ORDER_TEST:
-    fsm = fsm_light_order_test();
-    break;
-  case S_SIMON_SAYS:
-    fsm = fsm_simon_says();
-    break;
-  case S_SPEED_TEST_PARRY:
-    fsm = fsm_test_parry();
-    break;
+		fsm = fsm_speed_test_countdown();
+		break;
+	case S_SPEED_TEST_COUNTUP:
+		fsm = fsm_speed_test_countup();
+		break;
+	case S_ENDURO_TEST:
+		fsm = fsm_enduro_test();
+		break;
+	case S_LIGHT_ORDER_TEST:
+		fsm = fsm_light_order_test();
+		break;
+	case S_SIMON_SAYS:
+		fsm = fsm_simon_says();
+		break;
+	case S_SPEED_TEST_PARRY:
+		fsm = fsm_test_parry();
+		break;
+	case S_WHACK_A_MOLE:
+		fsm = whackAmole();
+		break;
+
   default:
     fsm = S_INIT;
     break;
@@ -196,13 +201,47 @@ state fsm_init(){
 }
 
 state fsm_clock_led_loop(){
-	
+	static int i = 0;
 	pollButtons();
 	
-	if (buttonHeldTime[0] > = 100 && buttonHeldTime[1] => 100){
-		while (buttonHeldTime[0] != 0 || buttonHeldTime[1] != 0); //
+	if (i > 7)
+		i = 0;
+	
+	//2,4,7,9,10,8,5,3,
+	switch (i)
+	{
+	  case 0:
+		lightSingleLed(2);
+		break;
+	  case 1:
+		lightSingleLed(4);
+		break;
+	  case 2:
+		lightSingleLed(7);
+		break;
+	  case 3:
+		lightSingleLed(9);
+		break;
+	  case 4:
+		lightSingleLed(10);
+		break;
+	  case 5:
+		lightSingleLed(8);
+		break;
+	  case 6:
+		lightSingleLed(5);
+		break;
+	  case 7:
+		lightSingleLed(3);
+		break;		
+	}
+	i++;
+	
+	
+	if (buttonHeldTime[0] >= 100 && buttonHeldTime[1] >= 100){
+		while (buttonHeldTime[0] != 0 || buttonHeldTime[1] != 0); //wait until user releases both buttons
 		
-		
+		return	S_WHACK_A_MOLE;
 	}
 		
 	
@@ -278,7 +317,7 @@ void pollButtons(){
   
 
 
-void whackAmole(){
+state whackAmole(){
   randNumber = random(13);
   lightDLeds(255,255,255);
   lightSingleLed(randNumber);  
@@ -302,6 +341,8 @@ else
    lightDLeds(255,0,0);
 
 delay(500);
+
+return S_WHACK_A_MOLE;
 }
 
 void lightSingleLed(int ledNumber){
