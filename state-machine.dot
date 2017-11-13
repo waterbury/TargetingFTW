@@ -1,0 +1,14 @@
+digraph G {
+	ranksep=equally;
+
+	start [shape=box];
+	start -> hw_init;
+	
+	hw_init -> s0_clock_led;
+	
+	d_2buttons [shape=diamond, label="Two buttons\npressed?"];
+	s0_clock_led -> d_2buttons;
+
+	d_2buttons -> s0_clock_led [label="No"];
+	d_2buttons -> s1_top_menu [label="Yes"];
+}
