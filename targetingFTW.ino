@@ -63,6 +63,24 @@
 
 #define tempButton A5
 
+// Patrick's grand design for the state machine with typedefs and enums and shit
+typedef enum state
+{
+  S_INIT,
+  S_CLOCK_LED_LOOP,
+  S_MAIN_MENU,
+  S_PREGAME_COUNTDOWN,
+  S_GAME_OVER,
+  S_SPEED_TEST_COUNTDOWN,
+  S_SPEED_TEST_COUNTUP,
+  S_ENDURO_TEST,
+  S_LIGHT_ORDER_TEST,
+  S_SIMON_SAYS,
+  S_SPEED_TEST_PARRY
+} State;
+
+State fsm;
+
 int buttonArray [2][13] = {{
   BUTTON_C1,
   BUTTON_C2,
@@ -112,10 +130,6 @@ uint32_t timerVariable = 0;
 int flag = 0;
 
 void setup() {
-  // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
-#if defined (__AVR_ATtiny85__)
-  if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
-#endif
   // End of trinket special code
   randomSeed(analogRead(6));
   Serial.begin(9600);
@@ -128,7 +142,54 @@ void setup() {
 }
 
 
-void loop() {
+void loop()
+{
+  switch (fsm)
+  {
+    case S_INIT:
+      fsm = fsm_init();
+      break;
+    case S_CLOCK_LED_LOOP;
+      fsm = fsm_clock_led_loop();
+      break;
+    case S_MAIN_MENU:
+      fsm = fsm_main_menu();
+      break;
+    case S_PREGAME_COUNTDOWN:
+      fsm = fsm_pregame_countdown();
+      break;
+    case S_GAME_OVER:
+      fsm = fsm_game_over();
+    break;
+  case S_SPEED_TEST_COUNTDOWN:
+    fsm = fsm_speed_test_countdown();
+    break;
+  case S_SPEED_TEST_COUNTUP:
+    fsm = fsm_speed_test_countup();
+    break;
+  case S_ENDURO_TEST:
+    fsm = fsm_enduro_test();
+    break;
+  case S_LIGHT_ORDER_TEST:
+    fsm = fsm_light_order_test();
+    break;
+  case S_SIMON_SAYS:
+    fsm = fsm_simon_says();
+    break;
+  case S_SPEED_TEST_PARRY:
+    fsm = fsm_test_parry();
+    break;
+  default:
+    fsm = S_INIT;
+    break;
+  }
+}
+
+  
+
+  
+  
+
 	
 	for (j=0;j<13;j++){
 		if (digitalRead(buttonArray[0][j]) == 0){
@@ -142,7 +203,7 @@ void loop() {
 
 whackAmole();
   
-}
+
 
 void whackAmole(){
   randNumber = random(13);
