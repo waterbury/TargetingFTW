@@ -98,19 +98,19 @@ int buttonArray [2][13] = {{
   BUTTON_C3
 },
 {
-  12,
-  4,
-  8,
-  13,
-  3,
-  14,
-  17,
-  2,
-  16,
-  1,
-  18,
-  15,
-  0
+  LED_C1,
+  LED_C2,
+  LED_B1,
+  LED_B8,
+  LED_B2,
+  LED_B7,
+  LED_A,
+  LED_B3,
+  LED_B6,
+  LED_B4,
+  LED_B5,
+  LED_C4,
+  LED_C3
 }};
 
 
@@ -132,7 +132,6 @@ int flag = 0;
 
 void setup() {
 
-  
 	fsm = S_INIT;
 }
 
@@ -238,13 +237,13 @@ state fsm_clock_led_loop(){
 	i++;
   delay(100);
 	
-	
-	if (buttonHeldTime[0] >= 3 && buttonHeldTime[1] >= 3){
+	//after holding C1 and C2 for some time
+	if (buttonHeldTime[0] >= 3 && buttonHeldTime[1] >= 3){ 
 		while (buttonHeldTime[0] != 0 || buttonHeldTime[1] != 0) //wait until user releases both buttons
-      pollButtons();
+			pollButtons();
 		
 		
-		return	S_WHACK_A_MOLE;
+		return	S_MAIN_MENU;
 	}
 		
 	
@@ -252,45 +251,134 @@ state fsm_clock_led_loop(){
 }
 
 state fsm_main_menu(){
+	uint32_t i = 0;
+	uint32_t intensity = 0;
+	int targetMode = 0;
+	
+	pollButtons();
+	
+	for (i = 2; i <= 10; i++){
+		if (buttonHeldTime[i]){
+			intensity = buttonHeldTime[i] * 5;
+			if (intensity > 255)
+				intensity = 255;
+			
+			
+			pixels.setPixelColor(buttonArray[1][i], 0, intensity, 0);
+			
+			if (intensity == 255)
+				targetMode = i;
+			
+		}
+		
+		else
+			pixels.setPixelColor(buttonArray[1][i], 255, 255, 255);
+		
+		
+		
+	}
+	pixels.show();
+	
+	
+	if (targetMode){
+		switch (targetMode){	
+	 case 2:
+		return S_SPEED_TEST_COUNTDOWN; 
+		break;
+	 case 3:
+		//return S_FOOTWORK; 
+		break;
+	 case 4:
+		return S_SPEED_TEST_COUNTUP;
+		break;
+	 case 5:
+		return S_SIMON_SAYS;
+		break;
+	 case 6:
+		
+		break;
+	 case 7:
+		return S_ENDURO_TEST;
+		break;
+	 case 8:
+		//return S_MULTI_CHOICE;
+		break;
+	 case 9:
+		return S_LIGHT_ORDER_TEST;
+		break;
+	 case 10:
+		//return S_RIGHTWRONG;
+		break;	
+	case 11:
+		return S_SPEED_TEST_PARRY;
+		break;		
+				
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
 	return S_MAIN_MENU;	
 }
 
 state fsm_pregame_countdown(){
+	return S_CLOCK_LED_LOOP; //temporary
 
 	return S_PREGAME_COUNTDOWN;
 }
 
 state fsm_game_over(){
+	return S_CLOCK_LED_LOOP; //temporary
+
 
 	return S_GAME_OVER;
 }
 
 state fsm_speed_test_countdown(){
+	return S_CLOCK_LED_LOOP; //temporary	
+	
 	
 	return S_SPEED_TEST_COUNTDOWN;
 }
 
 state fsm_speed_test_countup(){
+	return S_CLOCK_LED_LOOP; //temporary
+
 	
 	return S_SPEED_TEST_COUNTUP;
 }
 
 state fsm_enduro_test(){
+	return S_CLOCK_LED_LOOP; //temporary
+	
 	
 	return S_ENDURO_TEST;
 }
 
 state fsm_light_order_test(){
+	return S_CLOCK_LED_LOOP; //temporary
+
+	
 	
 	return S_LIGHT_ORDER_TEST;
 }
 
 state fsm_simon_says(){
+	return S_CLOCK_LED_LOOP; //temporary
+
+
 	
 	return S_SIMON_SAYS;
 }
 
 state fsm_test_parry(){
+	return S_CLOCK_LED_LOOP; //temporary
+
+
 	
 	return S_SPEED_TEST_PARRY;
 }
