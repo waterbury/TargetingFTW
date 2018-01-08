@@ -113,6 +113,10 @@ int buttonArray [2][13] = {{
   LED_C3
 }};
 
+//for simon says
+int randomArray[100]; //Intentionally long to store up to 100 inputs (doubtful anyone will get this far)
+int inputArray[100];
+
 
 uint32_t buttonHeldTime[13];
 
