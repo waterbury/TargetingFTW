@@ -255,7 +255,8 @@ state fsm_main_menu(){
 	uint32_t intensity = 0;
 	int targetMode = 0;
 	
-	pollButtons();
+	if ( pollButtons() )
+		return S_CLOCK_LED_LOOP;
 	
 	for (i = 2; i <= 10; i++){
 		if (buttonHeldTime[i]){
@@ -295,7 +296,7 @@ state fsm_main_menu(){
 		return S_SIMON_SAYS;
 		break;
 	 case 6:
-		
+		return S_WHACK_A_MOLE;
 		break;
 	 case 7:
 		return S_ENDURO_TEST;
@@ -391,7 +392,8 @@ state fsm_test_parry(){
   
   
 
-void pollButtons(){
+int pollButtons(){
+	static int exit_flag = 0; //intent of user to exit current state
 	
 	for (j=0;j<13;j++){
 		if (digitalRead(buttonArray[0][j]) == 0)
@@ -401,7 +403,17 @@ void pollButtons(){
 		
     }
 	delay(10);
+	
+	if (buttonHeldTime[0] >= 3 && buttonHeldTime[1] >= 3)
+		exit_flag = 1; //user wants to exit current state
+	
+	if (exit_flag) 
+		if (buttonHeldTime[0] == 0 && buttonHeldTime[1] == 0){ //buttons no longer being held
+			exit_flag = 0;
+			return 1;
+		}
 
+	return 0;
 }
 //whackAmole();
   
@@ -415,8 +427,11 @@ state whackAmole(){
   
 for (timerVariable =0;timerVariable<100000 && flag == 0;timerVariable++){
   
+	if( pollButtons() )
+		return S_CLOCK_LED_LOOP;
+  
     for (j=0;j<13;j++){
-    if (digitalRead(buttonArray[0][j]) == 0){
+    if (buttonHeldTime[j] > 0){
      if (j == randNumber) 
       flag = 1;
      else 
