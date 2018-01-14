@@ -519,7 +519,7 @@ int READ_STEP = 0;
 
 
 //We begin with the "reset game" function where we fill up our GAME_SEQUENCE array
-void resetGame(){
+state resetGame(){
   // reset steps
   READ_STEP = 0;
   GAME_STEP = 0;
@@ -531,6 +531,8 @@ void resetGame(){
 
   // Go to next game state; show led sequence
   GAME_STATUS = 1;
+  
+  return S_SIMON_SAYS;
 }
 
 //Our next game step would be the playback step where we play the sequence
@@ -744,7 +746,7 @@ state fsm_simon_says(){
   // In what mode are we?
   switch(GAME_STATUS){
     case 0:
-      resetGame();
+      currentState = resetGame();
       break;
     case 1:
       playSequence();
