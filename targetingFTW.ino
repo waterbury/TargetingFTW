@@ -709,25 +709,25 @@ int readButtons(void){
 		
 		if (buttonArray[0][i] == SIMON_RED_BUTTON)
 			if (buttonHeldTime[i]){
-				println("#1");
+				Serial.println("#1");
 				return 1;		
 			}
 		
 		else if (buttonArray[0][i] == SIMON_GREEN_BUTTON)
 			if (buttonHeldTime[i]){
-				println("#2");
+				Serial.println("#2");
 				return 2;
 			}
 		
 		else if (buttonArray[0][i] == SIMON_BLUE_BUTTON)
 			if (buttonHeldTime[i]){
-				println("#3");
+				Serial.println("#3");
 				return 3;
 			}
 		
 		else if (buttonArray[0][i] == SIMON_YELLOW_BUTTON)
 			if (buttonHeldTime[i]){
-				println("#4");
+				Serial.println("#4");
 				return 4;
 			}
 		
