@@ -204,6 +204,7 @@ state fsm_init(){
 }
 
 state fsm_clock_led_loop(){
+	lightDLeds(0,0,0);
 	randomSeed(analogRead(0));
 	static uint32_t i = 0;
 	pollButtons();
@@ -676,13 +677,13 @@ void setLEDs(boolean red, boolean green, boolean blue, boolean yellow ){
 	
 	for (i = 0;i < 13;i++){
 		
-		if (buttonArray[1][i] == SIMON_RED_LED && red == true)
+		if (buttonArray[1][i] == SIMON_RED_LED)
 			pixels.setPixelColor(buttonArray[1][i], 255, 0, 0);
-		else if (buttonArray[1][i] == SIMON_BLUE_LED && blue == true)
+		else if (buttonArray[1][i] == SIMON_BLUE_LED)
 			pixels.setPixelColor(buttonArray[1][i], 0, 0, 255);
-		else if (buttonArray[1][i] == SIMON_GREEN_LED && green == true)
+		else if (buttonArray[1][i] == SIMON_GREEN_LED)
 			pixels.setPixelColor(buttonArray[1][i], 0, 255, 0);		
-		else if (buttonArray[1][i] == SIMON_YELLOW_LED && yellow == true)
+		else if (buttonArray[1][i] == SIMON_YELLOW_LED)
 			pixels.setPixelColor(buttonArray[1][i], 255, 255, 0);
 		else
 			pixels.setPixelColor(buttonArray[1][i], 0, 0, 0);		
