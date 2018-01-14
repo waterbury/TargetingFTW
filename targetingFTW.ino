@@ -553,6 +553,9 @@ void playSequence(){
 //After playing our sequence we wait for pushbutton input
 void readSequence(){
   // read our buttons
+  	if( pollButtons() )
+		return S_CLOCK_LED_LOOP;
+	
   int button_value = readButtons();
   
   if(button_value > 0){
@@ -561,10 +564,10 @@ void readSequence(){
       // correct value!
       setLED(button_value);
       playTone(button_value);
-      digitalWrite(LED_CORRECT, HIGH);
+      lightDLeds(0,255,0); //digitalWrite(LED_CORRECT, HIGH);
       delay(GAME_SPEED);
       clearLEDs();
-      digitalWrite(LED_CORRECT, LOW);
+      lightDLeds(0,0,0);  //digitalWrite(LED_CORRECT, LOW);
       
       // Lets speed it up!
       GAME_SPEED = GAME_SPEED-15;
@@ -613,8 +616,8 @@ void gameOver(){
  // tone(BUZZER, 93, TONE_DURATION);
  // delay(TONE_DURATION);
  // tone(BUZZER, 87, TONE_DURATION);
- // delay(TONE_DURATION);
- // delay(GAME_SPEED);
+  //delay(TONE_DURATION);
+  delay(GAME_SPEED);
 }
 
 //We also have some helper functions that make our lives easier, they can be used anywhere in our code
@@ -658,35 +661,69 @@ void playTone(int id){
   }
 }
 
+
+#define SIMON_RED_LED      LED_B2
+#define SIMON_BLUE_LED     LED_B4
+#define SIMON_GREEN_LED    LED_B8
+#define SIMON_YELLOW_LED   LED_B6
+
 void setLEDs(boolean red, boolean green, boolean blue, int yellow ){
+	
+	int i = 0;
+	
+	for (i = 0;i < 13;i++){
+		
+		if (buttonArray[1][i] == SIMON_RED_LED && red == true)
+			pixels.setPixelColor(buttonArray[1][i], 255, 0, 0);
+		else if (buttonArray[1][i] == SIMON_BLUE_LED && blue == true)
+			pixels.setPixelColor(buttonArray[1][i], 0, 0, 255);
+		else if (buttonArray[1][i] == SIMON_GREEN_LED && green == true)
+			pixels.setPixelColor(buttonArray[1][i], 0, 255, 0);		
+		else if (buttonArray[1][i] == SIMON_YELLOW_LED && yellow == true)
+			pixels.setPixelColor(buttonArray[1][i], 255, 255, 0);
+		else
+			pixels.setPixelColor(buttonArray[1][i], 0, 0, 0);		
+	}
+	
+	pixels.show();
   
-	if (red)
-		digitalWrite(LED_RED, HIGH);
-	else
-		digitalWrite(LED_RED, LOW);
-	
-	if (green)
-		digitalWrite(LED_GREEN, HIGH);
-	else 
-		digitalWrite(LED_GREEN, LOW);
- 
-	if (blue)
-		digitalWrite(LED_BLUE, HIGH);
-	else
-		digitalWrite(LED_BLUE, LOW);
-	
-	if (yellow) 
-		digitalWrite(LED_YELLOW, HIGH);
-	else 
-		digitalWrite(LED_YELLOW, LOW);
+
 }
 
 void clearLEDs(){
   setLEDs(false,false,false,false);
 }
 
+#define SIMON_RED_BUTTON      BUTTON_B2
+#define SIMON_BLUE_BUTTON     BUTTON_B4
+#define SIMON_GREEN_BUTTON    BUTTON_B8
+#define SIMON_YELLOW_BUTTON   BUTTON_B6
 int readButtons(void){
-  if (digitalRead(BUTTON_RED) == 0)
+	int i = 0;
+	
+	for (i = 0;i < 13;i++){
+		
+		if (buttonArray[0][i] == SIMON_RED_BUTTON)
+			if (buttonHeldTime[i])
+				return 1;		
+		
+		else if (buttonArray[0][i] == SIMON_GREEN_BUTTON)
+			if (buttonHeldTime[i])
+				return 2;
+		
+		else if (buttonArray[0][i] == SIMON_BLUE_BUTTON)
+			if (buttonHeldTime[i])
+				return 3;
+		
+		else if (buttonArray[0][i] == SIMON_YELLOW_BUTTON)
+			if (buttonHeldTime[i])
+				return 4;
+		
+	}
+	
+	return 0;
+/*	
+  if (if )
 	  return 1;
   else if (digitalRead(BUTTON_GREEN) == 0)
 	  return 2;
@@ -695,11 +732,12 @@ int readButtons(void){
   else if (digitalRead(BUTTON_YELLOW) == 0)
 	  return 4;
   
-  return 0;
+  return 0;*/
 }
 
 //Our loop function contains our main game loop; we use a switch case to quickly choose in which modus we're situated. This is called a "Super Loop" programming design. This allows us to easily have specific cases or "modes" for different parts of the game
 state fsm_simon_says(){
+	static state currentState = S_SIMON_SAYS;
 	//return S_CLOCK_LED_LOOP; //temporary
 	
   // In what mode are we?
@@ -717,5 +755,5 @@ state fsm_simon_says(){
       gameOver();
       break;
   }
-  	return S_SIMON_SAYS;
+  	return currentState;
 }
