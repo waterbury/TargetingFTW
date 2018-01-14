@@ -551,7 +551,7 @@ void playSequence(){
 }
 
 //After playing our sequence we wait for pushbutton input
-void readSequence(){
+state readSequence(){
   // read our buttons
   	if( pollButtons() )
 		return S_CLOCK_LED_LOOP;
@@ -604,6 +604,7 @@ void readSequence(){
   }
   
   delay(10);
+  return S_SIMON_SAYS;
 }
 
 //Finally when you make a mistake we execute the "game over" modus:
@@ -667,7 +668,7 @@ void playTone(int id){
 #define SIMON_GREEN_LED    LED_B8
 #define SIMON_YELLOW_LED   LED_B6
 
-void setLEDs(boolean red, boolean green, boolean blue, int yellow ){
+void setLEDs(boolean red, boolean green, boolean blue, boolean yellow ){
 	
 	int i = 0;
 	
@@ -749,7 +750,7 @@ state fsm_simon_says(){
       playSequence();
       break;
     case 2:
-      readSequence();
+      currentState = readSequence();
       break;
     case 3:
       gameOver();
