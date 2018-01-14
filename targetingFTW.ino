@@ -754,6 +754,9 @@ state fsm_simon_says(){
       break;
     case 3:
       gameOver();
+	  delay(2000);
+	  GAME_STATUS = 0;
+	  currentState = S_CLOCK_LED_LOOP;
       break;
   }
   	return currentState;
