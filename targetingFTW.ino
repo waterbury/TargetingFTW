@@ -510,7 +510,7 @@ pixels.show();
 #define YELLOW_TONE 392
 #define TONE_DURATION 250
 // Game Variables
-int GAME_SPEED = 250;
+int GAME_SPEED = 400;
 int GAME_STATUS = 0;
 int const GAME_MAX_SEQUENCE = 50;
 int GAME_SEQUENCE[GAME_MAX_SEQUENCE];
@@ -677,13 +677,13 @@ void setLEDs(boolean red, boolean green, boolean blue, boolean yellow ){
 	
 	for (i = 0;i < 13;i++){
 		
-		if (buttonArray[1][i] == SIMON_RED_LED)
+		if (buttonArray[1][i] == SIMON_RED_LED && (red == true) )
 			pixels.setPixelColor(buttonArray[1][i], 255, 0, 0);
-		else if (buttonArray[1][i] == SIMON_BLUE_LED)
+		else if (buttonArray[1][i] == SIMON_BLUE_LED && (blue == true) )
 			pixels.setPixelColor(buttonArray[1][i], 0, 0, 255);
-		else if (buttonArray[1][i] == SIMON_GREEN_LED)
+		else if (buttonArray[1][i] == SIMON_GREEN_LED && (green == true) )
 			pixels.setPixelColor(buttonArray[1][i], 0, 255, 0);		
-		else if (buttonArray[1][i] == SIMON_YELLOW_LED)
+		else if (buttonArray[1][i] == SIMON_YELLOW_LED && (yellow == true) )
 			pixels.setPixelColor(buttonArray[1][i], 255, 255, 0);
 		else
 			pixels.setPixelColor(buttonArray[1][i], 0, 0, 0);		
