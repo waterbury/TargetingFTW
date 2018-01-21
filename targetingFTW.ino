@@ -190,7 +190,7 @@ void loop()
 state fsm_init(){
 	int i = 0;
 	
-	//randomSeed(analogRead(6));
+	randomSeed(analogRead(6));
 	Serial.begin(9600);
 	pixels.begin(); // This initializes the NeoPixel library.
 
@@ -205,7 +205,7 @@ state fsm_init(){
 
 state fsm_clock_led_loop(){
 	lightDLeds(0,0,0);
-	randomSeed(analogRead(0));
+	randomSeed(analogRead(6));
 	static uint32_t i = 0;
 	pollButtons();
 	
