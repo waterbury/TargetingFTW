@@ -399,14 +399,15 @@ state fsm_test_parry(){
 
 int pollButtons(){
 	static int exit_flag = 0; //intent of user to exit current state
-	
-	for (j=0;j<13;j++){
-		if (digitalRead(buttonArray[0][j]) == 0)
-				buttonHeldTime[j]++;
-    else        
-				buttonHeldTime[j] = 0;
+	int i = 0;
 		
+	for (i=0;i<13;i++){
+		if (digitalRead(buttonArray[0][i]) == 0)
+			buttonHeldTime[i]++;
+		else        
+			buttonHeldTime[i] = 0;		
     }
+	
 	delay(10);
 	
 	if (buttonHeldTime[0] >= 3 && buttonHeldTime[1] >= 3)
@@ -616,11 +617,11 @@ void gameOver(){
   lightDLeds(255,0,0);//digitalWrite(LED_WRONG, HIGH);
   // Play Pwa Pwa Pwa
  // tone(BUZZER, 98, TONE_DURATION);
- // delay(TONE_DURATION);
+  delay(TONE_DURATION);
  // tone(BUZZER, 93, TONE_DURATION);
- // delay(TONE_DURATION);
+  delay(TONE_DURATION);
  // tone(BUZZER, 87, TONE_DURATION);
-  //delay(TONE_DURATION);
+  delay(TONE_DURATION);
   delay(GAME_SPEED);
 }
 
@@ -705,34 +706,40 @@ void clearLEDs(){
 int readButtons(void){
 	int i = 0;
 	
-	for (i = 0;i < 13;i++){
+	for (i = 0;i<13;i++){
+		Serial.print("i = ");
+		Serial.println(i);
 		
-		if (buttonArray[0][i] == SIMON_RED_BUTTON)
+		if (buttonArray[0][i] == SIMON_RED_BUTTON){
 			if (buttonHeldTime[i]){
 				Serial.println("#1");
 				return 1;		
 			}
+		}
 		
-		else if (buttonArray[0][i] == SIMON_GREEN_BUTTON)
+		else if (buttonArray[0][i] == SIMON_GREEN_BUTTON){
 			if (buttonHeldTime[i]){
 				Serial.println("#2");
 				return 2;
 			}
+		}
 		
-		else if (buttonArray[0][i] == SIMON_BLUE_BUTTON)
+		else if (buttonArray[0][i] == SIMON_BLUE_BUTTON){
 			if (buttonHeldTime[i]){
 				Serial.println("#3");
 				return 3;
 			}
+		}
 		
-		else if (buttonArray[0][i] == SIMON_YELLOW_BUTTON)
+		else if (buttonArray[0][i] == SIMON_YELLOW_BUTTON){
 			if (buttonHeldTime[i]){
 				Serial.println("#4");
 				return 4;
 			}
+		}
 		
 	}
-	
+	Serial.println("#0");
 	return 0;
 /*	
   if (if )
