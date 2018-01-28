@@ -574,7 +574,7 @@ state readSequence(){
       lightDLeds(0,0,0);  //digitalWrite(LED_CORRECT, LOW);
       
       // Lets speed it up!
-      GAME_SPEED = GAME_SPEED-15;
+      //GAME_SPEED = GAME_SPEED-15;
       
       Serial.println("Correct!");
       
