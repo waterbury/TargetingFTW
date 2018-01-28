@@ -511,7 +511,7 @@ pixels.show();
 #define YELLOW_TONE 392
 #define TONE_DURATION 250
 // Game Variables
-int GAME_SPEED = 400;
+int GAME_SPEED = 350;
 int GAME_STATUS = 0;
 int const GAME_MAX_SEQUENCE = 50;
 int GAME_SEQUENCE[GAME_MAX_SEQUENCE];
@@ -571,7 +571,7 @@ state readSequence(){
       lightDLeds(0,150,0); //digitalWrite(LED_CORRECT, HIGH);
       delay(GAME_SPEED);
       clearLEDs();
-      lightDLeds(150,150,150);  //digitalWrite(LED_CORRECT, LOW);
+      lightDLeds(100,100,100);  //digitalWrite(LED_CORRECT, LOW);
       
       // Lets speed it up!
       //GAME_SPEED = GAME_SPEED-15;
