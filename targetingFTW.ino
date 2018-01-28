@@ -571,7 +571,7 @@ state readSequence(){
       lightDLeds(0,150,0); //digitalWrite(LED_CORRECT, HIGH);
       delay(GAME_SPEED);
       clearLEDs();
-      lightDLeds(0,0,0);  //digitalWrite(LED_CORRECT, LOW);
+      lightDLeds(150,150,150);  //digitalWrite(LED_CORRECT, LOW);
       
       // Lets speed it up!
       //GAME_SPEED = GAME_SPEED-15;
