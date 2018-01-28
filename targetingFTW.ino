@@ -568,7 +568,7 @@ state readSequence(){
       // correct value!
       setLED(button_value);
       playTone(button_value);
-      lightDLeds(0,255,0); //digitalWrite(LED_CORRECT, HIGH);
+      lightDLeds(0,150,0); //digitalWrite(LED_CORRECT, HIGH);
       delay(GAME_SPEED);
       clearLEDs();
       lightDLeds(0,0,0);  //digitalWrite(LED_CORRECT, LOW);
@@ -614,7 +614,7 @@ state readSequence(){
 //Finally when you make a mistake we execute the "game over" modus:
 void gameOver(){
   // Red RGB
-  lightDLeds(255,0,0);//digitalWrite(LED_WRONG, HIGH);
+  lightDLeds(150,0,0);//digitalWrite(LED_WRONG, HIGH);
   // Play Pwa Pwa Pwa
  // tone(BUZZER, 98, TONE_DURATION);
   delay(TONE_DURATION);
@@ -691,7 +691,7 @@ void setLEDs(boolean red, boolean green, boolean blue, boolean yellow ){
 	}
 	
 	pixels.show();
-  
+    delay(10);
 
 }
 
