@@ -588,7 +588,7 @@ state readSequence(){
         Serial.println("Go To Next Step");
         
         // Light all LEDs to indicate next sequence
-        setLEDs(true,true,true,true);
+        //setLEDs(true,true,true,true);
         delay(GAME_SPEED);
         setLEDs(false,false,false,false);
         
